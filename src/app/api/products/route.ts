@@ -7,27 +7,22 @@ import { nanoid } from "nanoid";
 // ** Import database utilities and schema
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
-import { productsTable } from "@/db/schema";
-
-// ** Define Product interface
-interface Product {
-  name: string;
-  url: string;
-  platform: string;
-  min_price: number;
-  max_price: number;
-}
+import { InsertProduct, productsTable } from "@/db/schema";
 
 export const POST = async (req: Request) => {
   try {
     // Parse the request body
-    const { name, url, platform, min_price, max_price }: Product = await req.json();
+    const { name, url, platform, min_price, max_price }: InsertProduct =
+      await req.json();
 
     // Validate required fields
     if (!name || !url || !platform || !min_price || !max_price) {
-      return new Response(JSON.stringify({ success: false, error: "Missing required fields" }), {
-        status: 400,
-      });
+      return new Response(
+        JSON.stringify({ success: false, error: "Missing required fields" }),
+        {
+          status: 400,
+        }
+      );
     }
 
     // Initialize Cloudflare KV binding
@@ -61,8 +56,11 @@ export const POST = async (req: Request) => {
     console.error("Error in POST /api/products:", error);
 
     // Respond with an error message
-    return new Response(JSON.stringify({ success: false, error: error.message }), {
-      status: 500,
-    });
+    return new Response(
+      JSON.stringify({ success: false, error: error.message }),
+      {
+        status: 500,
+      }
+    );
   }
 };
