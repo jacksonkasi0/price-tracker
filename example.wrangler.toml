@@ -9,16 +9,7 @@ mode = "smart"
 
 [vars]
 NODE_VERSION="20.0.0" # Define the Node version to avoid build errors.
-CLOUDFLARE_ACCOUNT_ID=""
-CLOUDFLARE_DATABASE_ID=""
-CLOUDFLARE_D1_TOKEN=""
-
-
-[[ d1_databases ]]
-binding = "DB"
-database_name = "PRICE_TRACKER"
-database_id = "YOUR DB ID"
-migrations_dir = "drizzle"
+DATABASE_URL=""
 
 [[kv_namespaces]]
 binding = "MY_KV_NAMESPACE"
