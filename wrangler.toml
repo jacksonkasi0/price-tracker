@@ -13,3 +13,6 @@ NODE_VERSION="20.0.0" # Define the Node version to avoid build errors.
 [[kv_namespaces]]
 binding = "MY_KV_NAMESPACE"
 id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+[schedule]
+crons = ["0 * * * *"] # Runs every hour
