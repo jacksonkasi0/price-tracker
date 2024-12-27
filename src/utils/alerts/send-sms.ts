@@ -4,4 +4,5 @@ export const sendSms = async (
   url: string
 ) => {
   // Implement your sms logic here
+  console.log(`Sending SMS for ${productName} at ${price} - ${url}`);
 };

@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, integer, serial, timestamp, primaryKey } from "drizzle-orm/pg-core";
+import { pgTable, text, integer, serial, timestamp } from "drizzle-orm/pg-core";
 
 // Products Table
 export const productsTable = pgTable("products", {

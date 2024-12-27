@@ -12,6 +12,7 @@ import { fetchPrice } from "@/utils/scraper";
 import { sendSms } from "@/utils/alerts/send-sms";
 import { sendEmail } from "@/utils/alerts/send-mail";
 
+// https://price-tracker.cloudflareworkers.com/api/update-prices
 export const POST = async () => {
   // Initialize Cloudflare KV binding
   const kv = getRequestContext().env.PRICE_TRACKER;

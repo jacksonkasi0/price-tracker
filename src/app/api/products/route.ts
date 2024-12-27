@@ -49,12 +49,22 @@ export const POST = async (req: Request) => {
       JSON.stringify({ success: true, product: insertedProduct }),
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error in POST /api/products:", error);
 
-    // Respond with an error message
+    // Check if the error is an instance of Error and respond accordingly
+    if (error instanceof Error) {
+      return new Response(
+        JSON.stringify({ success: false, error: error.message }),
+        {
+          status: 500,
+        }
+      );
+    }
+
+    // Fallback for unknown error types
     return new Response(
-      JSON.stringify({ success: false, error: error.message }),
+      JSON.stringify({ success: false, error: "An unknown error occurred" }),
       {
         status: 500,
       }
