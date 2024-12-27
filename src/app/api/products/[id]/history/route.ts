@@ -4,12 +4,6 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { priceHistoryTable } from "@/db/schema";
 
-interface Context {
-  params: {
-    id: string;
-  };
-}
-
 export const GET = async (req: Request, { params }: { params: { id: string } }) => {
   const { id } = params;
 
