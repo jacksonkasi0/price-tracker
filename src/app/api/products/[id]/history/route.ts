@@ -10,8 +10,8 @@ interface Context {
   };
 }
 
-export const GET = async (req: Request, context: Context) => {
-  const { id } = context.params;
+export const GET = async (req: Request, { params }: { params: { id: string } }) => {
+  const { id } = params;
 
   // Convert `id` to a number
   const productId = parseInt(id, 10);
