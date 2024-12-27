@@ -4,6 +4,8 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { priceHistoryTable } from "@/db/schema";
 
+export const runtime = 'edge';
+
 export const GET = async (req: Request, { params }: { params: Promise<{ id: string }> }) => {
   // Await the `params` to ensure they are resolved
   const { id } = await params;

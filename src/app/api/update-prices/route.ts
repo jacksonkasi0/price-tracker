@@ -12,6 +12,8 @@ import { fetchPrice } from "@/utils/scraper";
 import { sendSms } from "@/utils/alerts/send-sms";
 import { sendEmail } from "@/utils/alerts/send-mail";
 
+export const runtime = 'edge';
+
 // https://price-tracker-1sh.pages.dev/api/update-prices
 export const POST = async () => {
   // Initialize Cloudflare KV binding

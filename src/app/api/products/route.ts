@@ -6,6 +6,8 @@ import { getRequestContext } from "@cloudflare/next-on-pages";
 import { db } from "@/db";
 import { InsertProduct, productsTable } from "@/db/schema";
 
+export const runtime = 'edge';
+
 export const POST = async (req: Request) => {
   try {
     // Parse the request body
