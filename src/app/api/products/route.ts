@@ -5,7 +5,6 @@ import { getRequestContext } from "@cloudflare/next-on-pages";
 import { nanoid } from "nanoid";
 
 // ** Import database utilities and schema
-import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { InsertProduct, productsTable } from "@/db/schema";
 

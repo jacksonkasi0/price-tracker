@@ -1,6 +1,7 @@
+import { eq } from "drizzle-orm";
+
 import { db } from "@/db";
 import { priceHistoryTable } from "@/db/schema";
-import { eq } from "drizzle-orm";
 
 export const GET = async (req: Request, { params }: { params: { id: string } }) => {
   const history = await db
