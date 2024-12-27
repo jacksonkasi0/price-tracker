@@ -16,5 +16,5 @@ BRIGHT_DATA_API_KEY="xxxxxxxxxxxx"
 # binding = "PRICE_TRACKER"
 # id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
-[schedule]
-crons = ["0 * * * *"] # Runs every hour
+# [schedule]
+# crons = ["0 * * * *"] # Runs every hour
