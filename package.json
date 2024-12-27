@@ -43,6 +43,9 @@
     "tsx": "^4.19.2",
     "typescript": "^5",
     "vercel": "^39.2.2",
-    "wrangler": "^3.99.0"
-  }
+    "wrangler": "^3.99.0",
+    "@types/bun": "latest"
+  },
+  "module": "index.ts",
+  "type": "module"
 }
