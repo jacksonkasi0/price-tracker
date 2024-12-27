@@ -15,7 +15,10 @@ import { sendEmail } from "@/utils/alerts/send-mail";
 export const runtime = 'edge';
 
 // https://price-tracker-1sh.pages.dev/api/update-prices
-export const POST = async () => {
+export const POST = async (request: Request) => {
+
+  console.log("Request received", request.body);
+
   // Initialize Cloudflare KV binding
   const kv = getRequestContext().env.PRICE_TRACKER;
 
