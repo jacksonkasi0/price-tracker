@@ -1,10 +1,8 @@
-// ** Import Cloudflare-specific functionality
+// ** import 3rd party libraries
+import { nanoid } from "nanoid";
 import { getRequestContext } from "@cloudflare/next-on-pages";
 
-// ** Import 3rd party libraries
-import { nanoid } from "nanoid";
-
-// ** Import database utilities and schema
+// ** import database utilities and schema
 import { db } from "@/db";
 import { InsertProduct, productsTable } from "@/db/schema";
 
