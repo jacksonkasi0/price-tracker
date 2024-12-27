@@ -1,5 +1,6 @@
 import { eq } from "drizzle-orm";
 
+// ** import database utilities and schema
 import { db } from "@/db";
 import { priceHistoryTable } from "@/db/schema";
 
