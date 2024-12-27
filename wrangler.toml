@@ -1,0 +1,20 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "price-tracker"
+compatibility_date = "2024-12-24"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output/static"
+
+[placement]
+mode = "smart"
+
+[vars]
+NODE_VERSION="20.0.0" # Define the Node version to avoid build errors.
+DATABASE_URL="xxxxx" 
+BRIGHT_DATA_API_KEY="xxxxxxxxxxxx"
+
+# [[kv_namespaces]]
+# binding = "PRICE_TRACKER"
+# id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+[schedule]
+crons = ["0 * * * *"] # Runs every hour
