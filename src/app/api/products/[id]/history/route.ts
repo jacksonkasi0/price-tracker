@@ -1,10 +1,16 @@
 import { eq } from "drizzle-orm";
 
-// ** import database utilities and schema
+// ** Import database utilities and schema
 import { db } from "@/db";
 import { priceHistoryTable } from "@/db/schema";
 
-export const GET = async (req: Request, context: { params: { id: string } }) => {
+interface Context {
+  params: {
+    id: string;
+  };
+}
+
+export const GET = async (req: Request, context: Context) => {
   const { id } = context.params;
 
   // Convert `id` to a number
