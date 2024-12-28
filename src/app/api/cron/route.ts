@@ -1,20 +1,23 @@
+// src/app/api/cron/route.ts
+
 // ** import db & schema
 import { db } from "@/db";
 import { productsTable } from "@/db/schema";
 
 // ** import utils
-import { fetchPrice } from "@/utils/scraper";
+import { productScraperTrigger } from "@/utils/scraper";
 
 export const runtime = "edge";
 
-export const POST = async () => {
+export const GET = async () => {
+  // Fetch all products from the database
   const allProducts = await db.select().from(productsTable).execute();
 
-  await Promise.all(
-    allProducts.map(async (product) => {
-      await fetchPrice(product.url); // TODO: Implement scraper
-    })
-  );
+  // Extract URLs from the products
+  const productUrls = allProducts.map((product) => product.url);
+
+  // Pass all URLs at once to the scraper trigger
+  await productScraperTrigger(productUrls);
 
   return new Response(JSON.stringify({ success: true }), { status: 200 });
 };
