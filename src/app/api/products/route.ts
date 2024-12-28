@@ -8,6 +8,7 @@ import { InsertProduct, productsTable } from "@/db/schema";
 
 export const runtime = 'edge';
 
+// api/products POST
 export const POST = async (req: Request) => {
   try {
     // Parse the request body
