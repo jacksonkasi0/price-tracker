@@ -27,7 +27,6 @@ export const priceHistoryTable = pgTable("price_history", {
     .references(() => productsTable.id, { onDelete: "cascade" }), // Foreign key to products
   price: integer("price").notNull(),                // Price at the recorded time
   date: timestamp("date").defaultNow(),             // Timestamp
-  snapshot_id: text("snapshot_id").notNull(),       // Snapshot ID
 });
 
 // ** __________ RELATIONS __________ **
