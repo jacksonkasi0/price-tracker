@@ -9,6 +9,7 @@ import { productScraperTrigger } from "@/utils/scraper";
 
 export const runtime = "edge";
 
+// https://price-tracker-1sh.pages.dev/api/cron
 export const GET = async () => {
   // Fetch all products from the database
   const allProducts = await db.select().from(productsTable).execute();
