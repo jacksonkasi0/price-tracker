@@ -63,7 +63,7 @@ const Modal: React.FC<ModalProps> = ({
           >
             <div
               ref={ref}
-              className="relative w-full max-w-lg bg-surface p-6 rounded-xl shadow-lg focus:outline-none"
+              className="relative w-full max-w-lg bg-surface p-6 rounded-xl shadow-wg-md focus:outline-none"
             >
               {title && (
                 <Dialog.Title className="text-lg font-semibold text-primary">
