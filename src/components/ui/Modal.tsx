@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { motion } from "framer-motion";
+import { useOnClickOutside } from "usehooks-ts";
 
 interface ModalProps {
   isOpen: boolean;
@@ -30,6 +31,11 @@ const Modal: React.FC<ModalProps> = ({
     exit: { opacity: 0, scale: 0.9 },
   },
 }) => {
+  const ref = useRef<HTMLDivElement>(null!);
+
+  // Close modal when clicking outside
+  useOnClickOutside(ref, () => onOpenChange(false));
+
   return (
     <Dialog.Root open={isOpen} onOpenChange={onOpenChange}>
       <Dialog.Portal>
@@ -55,7 +61,10 @@ const Modal: React.FC<ModalProps> = ({
             exit="exit"
             transition={{ duration: 0.2, ease: "easeInOut" }}
           >
-            <div className="relative w-full max-w-lg bg-surface p-6 rounded-xl shadow-lg focus:outline-none">
+            <div
+              ref={ref}
+              className="relative w-full max-w-lg bg-surface p-6 rounded-xl shadow-lg focus:outline-none"
+            >
               {title && (
                 <Dialog.Title className="text-lg font-semibold text-primary">
                   {title}
