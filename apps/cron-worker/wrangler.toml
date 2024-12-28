@@ -11,5 +11,5 @@ mode = "smart"
 NODE_VERSION = "20.0.0" # Define the Node.js version to avoid build errors.
 API_URL = "https://price-tracker-1sh.pages.dev/api/cron"
 
-[schedule]
+[triggers]
 crons = ["0 0 * * *"] # Every day at midnight UTC
