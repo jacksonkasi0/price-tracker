@@ -1,4 +1,5 @@
 export type AmazonProduct  = {
+  url:                     string;
   title:                   string;
   seller_name:             string;
   brand:                   string;
@@ -16,7 +17,6 @@ export type AmazonProduct  = {
   answered_questions:      number;
   domain:                  string;
   images_count:            number;
-  url:                     string;
   video_count:             number;
   image_url:               string;
   item_weight:             string;
