@@ -2,14 +2,10 @@
 
 import { env } from "@/config";
 
-export const productScraperTrigger = async (url: string) => {
+export const productScraperTrigger = async (urls: string[]) => {
   const { BRIGHT_DATA_API_KEY, DATASET_ID, NOTIFY_URL: ENDPOINT } = env;
 
-  const requestBody = [
-    {
-      url,
-    },
-  ];
+  const requestBody = urls.map((url) => ({ url })); // Map all URLs into the request body format
 
   const response = await fetch(
     `https://api.brightdata.com/datasets/v3/trigger?dataset_id=${DATASET_ID}&endpoint=${encodeURIComponent(
