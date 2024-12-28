@@ -5,12 +5,13 @@ import { pgTable, text, integer, serial, timestamp } from "drizzle-orm/pg-core";
 export const productsTable = pgTable("products", {
   id: serial("id").primaryKey(),                  // Unique product ID
   name: text("name").notNull(),                   // Product name
-  url: text("url").notNull(),                     // Product link
+  url: text("url").notNull(),                     // Product link (key)
   platform: text("platform").notNull(),           // Platform: 'amazon', 'ebay', 'walmart'
   min_price: integer("min_price").notNull(),      // Minimum target price
   max_price: integer("max_price").notNull(),      // Maximum target price
   current_price: integer("current_price"),        // Current price (nullable initially)
   kv_key: text("kv_key").notNull(),               // Associated KV key
+  last_snapshot_id: text("last_snapshot_id"),     // Last snapshot ID (optional)
   created_at: timestamp("created_at").defaultNow(), // Creation timestamp
 });
 
@@ -26,6 +27,7 @@ export const priceHistoryTable = pgTable("price_history", {
     .references(() => productsTable.id, { onDelete: "cascade" }), // Foreign key to products
   price: integer("price").notNull(),                // Price at the recorded time
   date: timestamp("date").defaultNow(),             // Timestamp
+  snapshot_id: text("snapshot_id").notNull(),       // Snapshot ID
 });
 
 // ** __________ RELATIONS __________ **
