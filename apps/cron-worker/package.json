@@ -2,12 +2,11 @@
   "name": "price-tracker-cron-worker",
   "version": "0.0.0",
   "private": true,
-  "main": "./src/index.ts",
+  "main": "src/index.ts",
   "scripts": {
-    "deploy": "wrangler deploy src/index.ts",
-    "dev": "wrangler dev src/index.ts",
-    "start": "wrangler dev src/index.ts",
-    "test": "vitest",
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "start": "wrangler dev",
     "cf-typegen": "wrangler types"
   },
   "devDependencies": {
