@@ -1,0 +1,23 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "price-tracker"
+compatibility_date = "2024-12-24"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output/static"
+
+[placement]
+mode = "smart"
+
+[vars]
+NODE_VERSION="20.0.0" # Define the Node version to avoid build errors.
+
+# it's temprovery
+DATABASE_URL="postgresql://neondb_owner:Ctni9IQS5kmO@ep-gentle-glade-a1mtdwlb.ap-southeast-1.aws.neon.tech/neondb?sslmode=require"
+BRIGHT_DATA_API_KEY="08b6677783e615a48d917be748feb23faf4237047edcddc2815587b81ac7398e"
+
+# it's temprovery
+[[kv_namespaces]]
+binding = "PRICE_TRACKER"
+id = "0e00c45c264d4177ab0b6b02ddfcd971"
+
+[schedule]
+crons = ["0 * * * *"] # Runs every hour

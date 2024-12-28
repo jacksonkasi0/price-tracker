@@ -1,0 +1,18 @@
+{
+  "name": "price-tracker-cron-worker",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "scripts": {
+    "deploy": "wrangler deploy src/index.ts",
+    "dev": "wrangler dev src/index.ts",
+    "start": "wrangler dev src/index.ts",
+    "test": "vitest",
+    "cf-typegen": "wrangler types"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241224.0",
+    "typescript": "^5.5.2",
+    "wrangler": "^3.60.3"
+  }
+}

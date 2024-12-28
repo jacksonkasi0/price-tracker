@@ -48,4 +48,4 @@ next-env.d.ts
 
 notes.txt
 
-wrangler.toml
+./wrangler.toml
