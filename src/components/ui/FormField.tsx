@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Controller } from "react-hook-form";
 import { Input } from "@lemonsqueezy/wedges";
 
