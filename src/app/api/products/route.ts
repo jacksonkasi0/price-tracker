@@ -91,3 +91,45 @@ export const POST = async (req: Request) => {
     );
   }
 };
+
+export const GET = async (req: Request) => {
+  try {
+    // Retrieve all products from the database
+    const products = await db
+      .select({
+        id: productsTable.id,
+        name: productsTable.name,
+        url: productsTable.url,
+        platform: productsTable.platform,
+        min_price: productsTable.min_price,
+        max_price: productsTable.max_price,
+        current_price: productsTable.current_price,
+      })
+      .from(productsTable);
+
+    // Respond with the products
+    return new Response(JSON.stringify({ success: true, products }), {
+      status: 200,
+    });
+  } catch (error: unknown) {
+    console.error("Error in GET /api/products:", error);
+
+    // Check if the error is an instance of Error and respond accordingly
+    if (error instanceof Error) {
+      return new Response(
+        JSON.stringify({ success: false, error: error.message }),
+        {
+          status: 500,
+        }
+      );
+    }
+
+    // Fallback for unknown error types
+    return new Response(
+      JSON.stringify({ success: false, error: "An unknown error occurred" }),
+      {
+        status: 500,
+      }
+    );
+  }
+};
