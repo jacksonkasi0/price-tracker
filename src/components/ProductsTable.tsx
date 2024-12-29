@@ -1,8 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-
-// ** import third-party libraries
+import React, { useEffect, useState, useCallback } from "react";
 import { AgGridReact } from "ag-grid-react";
 import {
   ModuleRegistry,
@@ -16,19 +14,12 @@ import {
   NumberFilterModule,
 } from "ag-grid-community";
 
-// ** import styles for light and dark themes
 import "ag-grid-community/styles/ag-theme-alpine.css";
 
-// ** import config
+import PriceChip from "@/components/PriceChip";
 import { darkThemeConfig, lightThemeConfig } from "@/config/ag-grid";
-
-// ** import API functions 
 import { ApiResponse, fetchProducts, Product } from "@/api/products";
 
-import PriceChip from "@/components/PriceChip";
-
-
-// Register necessary modules
 ModuleRegistry.registerModules([
   ClientSideRowModelModule,
   TextFilterModule,
@@ -42,8 +33,8 @@ const ProductsTable: React.FC<{
 }> = ({ theme, onViewHistory }) => {
   const [rowData, setRowData] = useState<Product[]>([]);
   const [page, setPage] = useState<number>(1);
-
-  const limit = 10;
+  const [pageSize, setPageSize] = useState<number>(10);
+  const [totalRows, setTotalRows] = useState<number>(0);
 
   const columnDefs: ColDef[] = [
     {
@@ -63,18 +54,16 @@ const ProductsTable: React.FC<{
     {
       headerName: "URL",
       field: "url",
-      cellRenderer: (params: { value: string }) => {
-        return (
-          <a
-            href={params.value}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-primary hover:underline"
-          >
-            {params.value}
-          </a>
-        );
-      },
+      cellRenderer: (params: { value: string }) => (
+        <a
+          href={params.value}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-primary hover:underline"
+        >
+          {params.value}
+        </a>
+      ),
       sortable: true,
       filter: "agTextColumnFilter",
     },
@@ -127,19 +116,38 @@ const ProductsTable: React.FC<{
     },
   ];
 
-  useEffect(() => {
-    const loadProducts = async () => {
-      const data: ApiResponse = await fetchProducts(page, limit);
-      if (data.success) {
-        setRowData(data.products);
+  const fetchAndSetProducts = useCallback(
+    async (currentPage: number, currentPageSize: number) => {
+      try {
+        const data: ApiResponse = await fetchProducts(currentPage, currentPageSize);
+        if (data.success) {
+          setRowData(data.products);
+          setTotalRows(data.pagination.total);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
       }
-    };
-    loadProducts();
-  }, [page]);
+    },
+    []
+  );
 
-  {
-    /* AG Grid with dynamic theming based on system preference */
-  }
+  useEffect(() => {
+    fetchAndSetProducts(page, pageSize);
+  }, [page, pageSize, fetchAndSetProducts]);
+
+  const handlePaginationChanged = (event: any) => {
+    const newPage = event.api.paginationGetCurrentPage() + 1;
+    const newPageSize = event.api.paginationGetPageSize();
+
+    if (newPage !== page) {
+      setPage(newPage);
+    }
+
+    if (newPageSize !== pageSize) {
+      setPageSize(newPageSize);
+    }
+  };
+
   const myTheme = themeQuartz.withParams({
     ...(theme === "dark" ? darkThemeConfig : lightThemeConfig),
     headerFontSize: 14,
@@ -152,11 +160,10 @@ const ProductsTable: React.FC<{
         columnDefs={columnDefs}
         pagination={true}
         theme={myTheme}
-        paginationPageSize={limit}
-        paginationPageSizeSelector={[limit, limit * 2, limit * 3]}
-        onPaginationChanged={(event) =>
-          setPage(event.api.paginationGetCurrentPage() + 1)
-        }
+        paginationAutoPageSize={false}
+        paginationPageSize={pageSize}
+        paginationPageSizeSelector={[10, 25, 50, 100]}
+        onPaginationChanged={handlePaginationChanged}
       />
     </div>
   );
