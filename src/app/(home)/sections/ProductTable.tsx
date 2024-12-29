@@ -1,23 +1,31 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+
 import { AgGridReact } from "ag-grid-react";
-import { ModuleRegistry, ColDef } from "ag-grid-community";
+import {
+  ModuleRegistry,
+  ColDef,
+  themeQuartz,
+  PaginationModule,
+} from "ag-grid-community";
 import {
   ClientSideRowModelModule,
   TextFilterModule,
   NumberFilterModule,
 } from "ag-grid-community";
 
-// Import styles for light and dark themes
-import "ag-grid-community/styles/ag-theme-alpine.css"; 
+import { useTheme } from "next-themes";
 
+// Import styles for light and dark themes
+import "ag-grid-community/styles/ag-theme-alpine.css";
 
 // Register necessary modules
 ModuleRegistry.registerModules([
   ClientSideRowModelModule,
   TextFilterModule,
   NumberFilterModule,
+  PaginationModule,
 ]);
 
 // Define types for Product and API response
@@ -46,12 +54,11 @@ interface ApiResponse {
 const ProductsTable: React.FC = () => {
   const [rowData, setRowData] = useState<Product[]>([]);
   const [page, setPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(1);
-  const [isDarkTheme, setIsDarkTheme] = useState<boolean>(false);
+  const { theme } = useTheme();
+  const limit = 10;
 
   // Fetch products with pagination
   const fetchProducts = async (currentPage: number) => {
-    const limit = 10; // Rows per page
     try {
       const response = await fetch(
         `/api/products?page=${currentPage}&limit=${limit}`
@@ -60,7 +67,6 @@ const ProductsTable: React.FC = () => {
 
       if (data.success) {
         setRowData(data.products);
-        setTotalPages(Math.ceil(data.pagination.total / limit));
       } else {
         console.error("Error fetching products:", data);
       }
@@ -74,10 +80,30 @@ const ProductsTable: React.FC = () => {
   }, [page]);
 
   const columnDefs: ColDef[] = [
-    { headerName: "ID", field: "id", sortable: true, filter: "agTextColumnFilter" },
-    { headerName: "Name", field: "name", sortable: true, filter: "agTextColumnFilter" },
-    { headerName: "URL", field: "url", sortable: true, filter: "agTextColumnFilter" },
-    { headerName: "Platform", field: "platform", sortable: true, filter: "agTextColumnFilter" },
+    {
+      headerName: "ID",
+      field: "id",
+      sortable: true,
+      filter: "agTextColumnFilter",
+    },
+    {
+      headerName: "Name",
+      field: "name",
+      sortable: true,
+      filter: "agTextColumnFilter",
+    },
+    {
+      headerName: "URL",
+      field: "url",
+      sortable: true,
+      filter: "agTextColumnFilter",
+    },
+    {
+      headerName: "Platform",
+      field: "platform",
+      sortable: true,
+      filter: "agTextColumnFilter",
+    },
     {
       headerName: "Min Price",
       field: "min_price",
@@ -98,50 +124,52 @@ const ProductsTable: React.FC = () => {
     },
   ];
 
+  const darkThemeConfig = {
+    backgroundColor: "#1f2836",
+    browserColorScheme: "dark",
+    chromeBackgroundColor: {
+      ref: "foregroundColor",
+      mix: 0.07,
+      onto: "backgroundColor",
+    },
+    foregroundColor: "#FFF",
+  };
+
+  const lightThemeConfig = {
+    backgroundColor: "#FFF",
+    browserColorScheme: "light",
+    chromeBackgroundColor: {
+      ref: "foregroundColor",
+      mix: 0.07,
+      onto: "backgroundColor",
+    },
+    foregroundColor: "#000",
+  };
+
+  {/* AG Grid with dynamic theming based on system preference */}
+  const myTheme = themeQuartz.withParams({
+    ...(theme === "dark" ? darkThemeConfig : lightThemeConfig),
+    headerFontSize: 14,
+  });
+
   return (
     <div>
-      {/* Theme Toggle Button */}
-      <div className="mb-4">
-        <button
-          className="px-4 py-2 bg-gray-200 rounded"
-          onClick={() => setIsDarkTheme((prev) => !prev)}
-        >
-          Toggle {isDarkTheme ? "Light" : "Dark"} Theme
-        </button>
-      </div>
-
-      {/* AG Grid with dynamic theming */}
       <div
-        className={`ag-theme-${isDarkTheme ? "alpine-dark" : "alpine"}`}
         style={{ height: 500, width: "100%" }}
       >
         <AgGridReact
           rowData={rowData}
           columnDefs={columnDefs}
           pagination={true}
+          theme={myTheme}
+          paginationPageSize={limit}
+          onPaginationChanged={
+            (event) => setPage(event.api.paginationGetCurrentPage() + 1)
+          }
         />
       </div>
 
-      {/* Pagination Controls */}
-      <div className="flex justify-between items-center mt-4">
-        <button
-          className="px-4 py-2 bg-gray-200 rounded"
-          onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-          disabled={page === 1}
-        >
-          Previous
-        </button>
-        <span>
-          Page {page} of {totalPages}
-        </span>
-        <button
-          className="px-4 py-2 bg-gray-200 rounded"
-          onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-          disabled={page === totalPages}
-        >
-          Next
-        </button>
-      </div>
+    
     </div>
   );
 };
