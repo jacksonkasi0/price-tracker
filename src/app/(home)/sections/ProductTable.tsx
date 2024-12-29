@@ -18,8 +18,9 @@ interface PriceHistory {
 const ProductsTableSection: React.FC = () => {
   const [priceHistory, setPriceHistory] = useState<PriceHistory[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
+  
   const { theme } = useTheme();
-  const chartTheme = theme === "dark" ? "dark" : "light";
+  const currentTheme = theme === "dark" ? "dark" : "light";
 
   const handleViewHistory = async (productId: number) => {
     const data: any = await fetchPriceHistory(productId);
@@ -31,10 +32,10 @@ const ProductsTableSection: React.FC = () => {
 
   return (
     <div>
-      <ProductsTable theme={chartTheme} onViewHistory={handleViewHistory} />
+      <ProductsTable theme={currentTheme} onViewHistory={handleViewHistory} />
       {priceHistory.length > 0 && (
         <div className="mt-6">
-          <PriceHistoryChart data={priceHistory} theme={chartTheme} />
+          <PriceHistoryChart data={priceHistory} theme={currentTheme} />
         </div>
       )}
     </div>
