@@ -30,7 +30,7 @@ export const POST = async (request: Request) => {
   await Promise.all(
     allProducts.map(async (product) => {
       const priceData = body.find((p) => p.input.url === product.url);
-      const current_price = priceData?.final_price || 0;
+      const current_price = priceData?.final_price || priceData?.initial_price || 0;
       const productData = priceData as WebhookAmazonProduct;
 
       // Update the current price in the database
