@@ -19,6 +19,7 @@ export const POST = async (request: Request) => {
   // Parse the request body
   const body: WebhookAmazonProduct[] = await request.json(); // Reads and parses the JSON body
 
+  console.log("Request body:", body);
   console.log("Request body Length :", body.length);
 
   // Initialize Cloudflare KV binding
