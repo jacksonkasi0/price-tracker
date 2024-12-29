@@ -23,7 +23,7 @@ const ProductsTableSection: React.FC = () => {
   const currentTheme = theme === "dark" ? "dark" : "light";
 
   const handleViewHistory = async (productId: number) => {
-    const data: any = await fetchPriceHistory(productId);
+    const data = await fetchPriceHistory(productId);
     if (data.success) {
       setPriceHistory(data.history);
       setSelectedProduct(`Product ${productId}`);
@@ -35,6 +35,9 @@ const ProductsTableSection: React.FC = () => {
       <ProductsTable theme={currentTheme} onViewHistory={handleViewHistory} />
       {priceHistory.length > 0 && (
         <div className="mt-6">
+          <h2 className="text-2xl font-semibold text-primary">
+            Price History for {selectedProduct}
+          </h2>
           <PriceHistoryChart data={priceHistory} theme={currentTheme} />
         </div>
       )}

@@ -59,7 +59,7 @@ const ProductsTable: React.FC<{
     {
       headerName: "URL",
       field: "url",
-      cellRenderer: (params: any) => {
+      cellRenderer: (params: { value: string }) => {
         return (
           <a
             href={params.value}
@@ -101,7 +101,7 @@ const ProductsTable: React.FC<{
     {
       headerName: "History",
       field: "id",
-      cellRenderer: (params: any) => (
+      cellRenderer: (params: { value: number }) => (
         <button
           onClick={() => onViewHistory(params.value)}
           className="text-primary hover:underline"
@@ -160,6 +160,7 @@ const ProductsTable: React.FC<{
         pagination={true}
         theme={myTheme}
         paginationPageSize={limit}
+        paginationPageSizeSelector={[limit, limit * 2, limit * 3]}
         onPaginationChanged={(event) =>
           setPage(event.api.paginationGetCurrentPage() + 1)
         }
