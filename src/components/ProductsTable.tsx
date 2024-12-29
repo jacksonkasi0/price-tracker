@@ -25,6 +25,8 @@ import { darkThemeConfig, lightThemeConfig } from "@/config/ag-grid";
 // ** import API functions 
 import { ApiResponse, fetchProducts, Product } from "@/api/products";
 
+import PriceChip from "@/components/PriceChip";
+
 
 // Register necessary modules
 ModuleRegistry.registerModules([
@@ -97,6 +99,17 @@ const ProductsTable: React.FC<{
     {
       headerName: "Current Price",
       field: "current_price",
+      cellRenderer: (params: {
+        value: number;
+        data: { min_price: number; max_price: number };
+      }) => (
+        <PriceChip
+          currentPrice={params.value}
+          minPrice={params.data.min_price}
+          maxPrice={params.data.max_price}
+          theme={theme}
+        />
+      ),
       sortable: true,
       filter: "agNumberColumnFilter",
     },
