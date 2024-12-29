@@ -42,7 +42,7 @@ const Modal: React.FC<ModalProps> = ({
         {/* Overlay */}
         <Dialog.Overlay>
           <motion.div
-            className="fixed inset-0 bg-background bg-opacity-25"
+            className="fixed inset-0 bg-black backdrop-blur-sm z-40 bg-opacity-25"
             variants={overlayAnimation}
             initial="hidden"
             animate="visible"
@@ -54,7 +54,7 @@ const Modal: React.FC<ModalProps> = ({
         {/* Dialog Content */}
         <Dialog.Content>
           <motion.div
-            className="fixed inset-0 flex items-center justify-center p-4"
+            className="fixed inset-0 flex items-center  justify-center p-4  z-50"
             variants={contentAnimation}
             initial="hidden"
             animate="visible"
@@ -63,7 +63,7 @@ const Modal: React.FC<ModalProps> = ({
           >
             <div
               ref={ref}
-              className="relative w-full max-w-lg bg-surface p-6 rounded-xl shadow-wg-md focus:outline-none"
+              className="relative w-full max-w-lg bg-surface-overlay p-6 rounded-xl shadow-wg-md focus:outline-none"
             >
               {title && (
                 <Dialog.Title className="text-lg font-semibold text-primary">
