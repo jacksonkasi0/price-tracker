@@ -17,7 +17,7 @@ export interface Pagination {
 export interface PriceHistory {
   id: number;
   product_id: number;
-  price: number;
+  price:  string;
   date: string;
 }
 
