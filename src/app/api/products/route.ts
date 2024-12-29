@@ -6,7 +6,7 @@ import { getRequestContext } from "@cloudflare/next-on-pages";
 import { db } from "@/db";
 import { InsertProduct, productsTable } from "@/db/schema";
 
-export const runtime = 'edge';
+export const runtime = "edge";
 
 // api/products POST
 export const POST = async (req: Request) => {
@@ -16,9 +16,26 @@ export const POST = async (req: Request) => {
       await req.json();
 
     // Validate required fields
-    if (!name || !url || !platform || !min_price || !max_price) {
+    if (!name || !url || !platform || min_price == null || max_price == null) {
       return new Response(
         JSON.stringify({ success: false, error: "Missing required fields" }),
+        {
+          status: 400,
+        }
+      );
+    }
+
+    // Round min_price and max_price to the nearest integer
+    const roundedMinPrice = Math.round(min_price);
+    const roundedMaxPrice = Math.round(max_price);
+
+    // Validate rounded prices
+    if (isNaN(roundedMinPrice) || isNaN(roundedMaxPrice)) {
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: "Invalid price values",
+        }),
         {
           status: 400,
         }
@@ -41,8 +58,8 @@ export const POST = async (req: Request) => {
         name,
         url,
         platform,
-        min_price,
-        max_price,
+        min_price: roundedMinPrice,
+        max_price: roundedMaxPrice,
         kv_key,
       })
       .returning(); // Ensure you retrieve the inserted product
