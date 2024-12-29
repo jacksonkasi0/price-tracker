@@ -22,6 +22,13 @@
       "when": 1735401217687,
       "tag": "0002_cold_hiroim",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1735457507538,
+      "tag": "0003_sharp_sleeper",
+      "breakpoints": true
     }
   ]
 }
