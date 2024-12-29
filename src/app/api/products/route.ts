@@ -5,6 +5,7 @@ import { getRequestContext } from "@cloudflare/next-on-pages";
 // ** import database utilities and schema
 import { db } from "@/db";
 import { InsertProduct, productsTable } from "@/db/schema";
+import { count } from "drizzle-orm";
 
 export const runtime = "edge";
 
@@ -94,7 +95,13 @@ export const POST = async (req: Request) => {
 
 export const GET = async (req: Request) => {
   try {
-    // Retrieve all products from the database
+    // Parse query parameters for pagination
+    const url = new URL(req.url);
+    const page = parseInt(url.searchParams.get("page") || "1", 10); // Default to page 1
+    const limit = parseInt(url.searchParams.get("limit") || "10", 10); // Default limit 10
+    const offset = (page - 1) * limit;
+
+    // Retrieve paginated products from the database
     const products = await db
       .select({
         id: productsTable.id,
@@ -105,16 +112,33 @@ export const GET = async (req: Request) => {
         max_price: productsTable.max_price,
         current_price: productsTable.current_price,
       })
+      .from(productsTable)
+      .offset(offset)
+      .limit(limit);
+
+    // Count the total number of products
+    const totalProducts = await db
+      .select({ count: count() })
       .from(productsTable);
 
-    // Respond with the products
-    return new Response(JSON.stringify({ success: true, products }), {
-      status: 200,
-    });
+    // Respond with the products and pagination metadata
+    return new Response(
+      JSON.stringify({
+        success: true,
+        products,
+        pagination: {
+          total: totalProducts[0].count,
+          page,
+          limit,
+        },
+      }),
+      {
+        status: 200,
+      }
+    );
   } catch (error: unknown) {
     console.error("Error in GET /api/products:", error);
 
-    // Check if the error is an instance of Error and respond accordingly
     if (error instanceof Error) {
       return new Response(
         JSON.stringify({ success: false, error: error.message }),
@@ -124,7 +148,6 @@ export const GET = async (req: Request) => {
       );
     }
 
-    // Fallback for unknown error types
     return new Response(
       JSON.stringify({ success: false, error: "An unknown error occurred" }),
       {
