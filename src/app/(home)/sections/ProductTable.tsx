@@ -146,7 +146,9 @@ const ProductsTable: React.FC = () => {
     foregroundColor: "#000",
   };
 
-  {/* AG Grid with dynamic theming based on system preference */}
+  {
+    /* AG Grid with dynamic theming based on system preference */
+  }
   const myTheme = themeQuartz.withParams({
     ...(theme === "dark" ? darkThemeConfig : lightThemeConfig),
     headerFontSize: 14,
@@ -154,22 +156,18 @@ const ProductsTable: React.FC = () => {
 
   return (
     <div>
-      <div
-        style={{ height: 500, width: "100%" }}
-      >
+      <div style={{ height: 500, width: "100%" }}>
         <AgGridReact
           rowData={rowData}
           columnDefs={columnDefs}
           pagination={true}
           theme={myTheme}
           paginationPageSize={limit}
-          onPaginationChanged={
-            (event) => setPage(event.api.paginationGetCurrentPage() + 1)
+          onPaginationChanged={(event) =>
+            setPage(event.api.paginationGetCurrentPage() + 1)
           }
         />
       </div>
-
-    
     </div>
   );
 };
