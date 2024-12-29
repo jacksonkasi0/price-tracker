@@ -6,27 +6,24 @@ import { useTheme } from "next-themes";
 import ProductsTable from "@/components/ProductsTable";
 import PriceHistoryChart from "@/components/PriceHistoryChart";
 
-import { fetchPriceHistory } from "@/api/products";
-
-interface PriceHistory {
-  id: number;
-  product_id: number;
-  price: number;
-  date: string;
-}
+import { fetchPriceHistory, PriceHistory } from "@/api/products";
 
 const ProductsTableSection: React.FC = () => {
   const [priceHistory, setPriceHistory] = useState<PriceHistory[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
-  
+
   const { theme } = useTheme();
   const currentTheme = theme === "dark" ? "dark" : "light";
 
   const handleViewHistory = async (productId: number) => {
-    const data = await fetchPriceHistory(productId);
-    if (data.success) {
-      setPriceHistory(data.history);
-      setSelectedProduct(`Product ${productId}`);
+    try {
+      const data = await fetchPriceHistory(productId);
+      if (data.success) {
+        setPriceHistory(data.history);
+        setSelectedProduct(`Product ${productId}`);
+      }
+    } catch (error) {
+      console.error("Failed to fetch price history:", error);
     }
   };
 
