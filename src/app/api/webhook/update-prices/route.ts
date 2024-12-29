@@ -30,19 +30,20 @@ export const POST = async (request: Request) => {
   await Promise.all(
     allProducts.map(async (product) => {
       const priceData = body.find((p) => p.input.url === product.url);
-      const current_price = priceData?.final_price || priceData?.initial_price || 0;
+      const current_price =
+        priceData?.final_price || priceData?.initial_price || 0;
       const productData = priceData as WebhookAmazonProduct;
 
       // Update the current price in the database
       await db
         .update(productsTable)
-        .set({ current_price })
+        .set({ current_price: current_price.toString() })
         .where(eq(productsTable.id, product.id));
 
       // Add price history entry
       await db.insert(priceHistoryTable).values({
         product_id: product.id,
-        price: current_price,
+        price: current_price.toString(),
       });
 
       // Get existing product data from KV (optional)
@@ -55,12 +56,12 @@ export const POST = async (request: Request) => {
       );
 
       // Send email notification if the price is less than or equal to max price
-      if (current_price <= product.max_price) {
+      if (current_price <= parseFloat(product.max_price)) {
         sendEmail(product.name, current_price, product.url); // TODO: Implement email logic
       }
 
       // Send SMS notification if the price is less than or equal to min price
-      if (current_price <= product.min_price) {
+      if (current_price <= parseFloat(product.min_price)) {
         sendSms(product.name, current_price, product.url); // TODO: Implement SMS logic
       }
     })
