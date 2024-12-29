@@ -6,6 +6,7 @@
 import React, { useState } from "react";
 
 // ** import third-party libraries
+import { toast } from 'sonner'
 import { useForm } from "react-hook-form";
 import { Button } from "@lemonsqueezy/wedges";
 
@@ -22,11 +23,9 @@ function AddProduct({ onSuccess }: { onSuccess: () => void }) {
   } = useForm();
 
   const [loading, setLoading] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>("");
 
   const onSubmit = async (data: any) => {
     setLoading(true);
-    setMessage("");
 
     try {
       const response = await fetch("/api/products", {
@@ -39,12 +38,12 @@ function AddProduct({ onSuccess }: { onSuccess: () => void }) {
         throw new Error("Failed to add product. Please try again.");
       }
 
-      setMessage("Product added successfully!");
+      toast.success("Product added successfully!");
       reset();
       onSuccess(); // Close the modal on success
     } catch (error) {
       console.error(error);
-      setMessage("Error: Unable to add product.");
+      toast.error("Error: Unable to add product.");
     } finally {
       setLoading(false);
     }
@@ -129,9 +128,6 @@ function AddProduct({ onSuccess }: { onSuccess: () => void }) {
       >
         {loading ? "Adding..." : "Add Product"}
       </Button>
-
-      {/* Feedback Message */}
-      {message && <p className="text-center text-surface mt-2">{message}</p>}
     </form>
   );
 }
