@@ -95,6 +95,18 @@ const ProductsTable: React.FC = () => {
     {
       headerName: "URL",
       field: "url",
+      cellRenderer: (params: any) => {
+        return (
+          <a
+            href={params.value}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:underline"
+          >
+            {params.value}
+          </a>
+        );
+      },
       sortable: true,
       filter: "agTextColumnFilter",
     },
