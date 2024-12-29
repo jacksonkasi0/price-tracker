@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 
+// ** import third-party libraries
 import { AgGridReact } from "ag-grid-react";
 import {
   ModuleRegistry,
@@ -15,14 +16,15 @@ import {
   NumberFilterModule,
 } from "ag-grid-community";
 
-// Import styles for light and dark themes
+// ** import styles for light and dark themes
 import "ag-grid-community/styles/ag-theme-alpine.css";
 
-import {
-  ApiResponse,
-  fetchProducts,
-  Product,
-} from "@/api/products";
+// ** import config
+import { darkThemeConfig, lightThemeConfig } from "@/config/ag-grid";
+
+// ** import API functions 
+import { ApiResponse, fetchProducts, Product } from "@/api/products";
+
 
 // Register necessary modules
 ModuleRegistry.registerModules([
@@ -121,28 +123,6 @@ const ProductsTable: React.FC<{
     };
     loadProducts();
   }, [page]);
-
-  const darkThemeConfig = {
-    backgroundColor: "#1f2836",
-    browserColorScheme: "dark",
-    chromeBackgroundColor: {
-      ref: "foregroundColor",
-      mix: 0.07,
-      onto: "backgroundColor",
-    },
-    foregroundColor: "#FFF",
-  };
-
-  const lightThemeConfig = {
-    backgroundColor: "#FFF",
-    browserColorScheme: "light",
-    chromeBackgroundColor: {
-      ref: "foregroundColor",
-      mix: 0.07,
-      onto: "backgroundColor",
-    },
-    foregroundColor: "#000",
-  };
 
   {
     /* AG Grid with dynamic theming based on system preference */
