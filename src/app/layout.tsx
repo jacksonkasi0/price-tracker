@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { ThemeProvider } from 'next-themes'
+import { ThemeProvider } from "next-themes";
 
-import { Toaster} from 'sonner'
+import { Toaster } from "sonner";
 
 // ** import styles
 import "./globals.css";
@@ -16,7 +16,6 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
 
 // ** SEO Metadata
 export const metadata: Metadata = {
@@ -51,18 +50,10 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-  },
   icons: {
     icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
   },
-  themeColor: "#ffffff",
-  manifest: "/site.webmanifest",
 };
-
 
 export default function RootLayout({
   children,
@@ -70,12 +61,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en"  suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Toaster richColors />
-         <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );
